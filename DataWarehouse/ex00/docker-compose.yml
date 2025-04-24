@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "${DB_PORT}:5432"
+    container_name: datasci_dp_pg
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DATABASE: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      TZ: "Asia/Bangkok"
+      PGTZ: "Asia/Bangkok"
+    command: 
+      - "postgres"
+      - "-c"
+      - "timezone=Asia/Bangkok"
+    volumes:
+      - pgdatasci:/var/lib/postgresql/data
+
+volumes:
+  pgdatasci:

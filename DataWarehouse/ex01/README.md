@@ -1,0 +1,1 @@
+# set database โดยใช้ scipt จาก ex00
