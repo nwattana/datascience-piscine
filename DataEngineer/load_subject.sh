@@ -1,7 +1,7 @@
 #!/bin/bash
 # LOAD FILE RESOUCE
 
-wget https://cdn.intra.42.fr/document/document/23498/subject.zip -O subject.zip
+wget  -O subject.zip
 
 unzip subject.zip
 
