@@ -146,7 +146,7 @@ def create_item_table(schema, task):
 
 if __name__ == "__main__":
     customer_task = generate_file_path()
-    schema_name = "Nell"
+    schema_name = "ex04"
     create_customer_table(schema_name, customer_task)
     
     item_task = get_item_file_path()

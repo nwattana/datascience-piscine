@@ -97,6 +97,6 @@ def create_table(schema, task):
 
 if __name__ == "__main__":
     task = generate_file_path()
-    schema_name = "ex032"
+    schema_name = "ex03"
     create_table(schema_name, task)
     # create_table_2(schema_name, task)
