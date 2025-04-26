@@ -3,6 +3,7 @@ from psycopg2.extras import execute_batch
 from rich import inspect, print as rp
 import os
 import pandas as pd
+from io import StringIO
 
 def loadEnv():
     """
@@ -61,20 +62,20 @@ def create_table(schema, task):
     
     try:
         # # Create Schema
-        # create_schema_statement = f'create schema {schema};'
-        # cur.execute(create_schema_statement)
-        # conn.commit()
+        create_schema_statement = f'create schema IF NOT EXISTS {schema};'
+        cur.execute(create_schema_statement)
+        conn.commit()
         
         # Create Table
         for t in task:
             create_table_statement = f"""
-            CREATE TABLE {t['name']} (
-                event_time date,
-                event_type varchar(20),
-                product_id numeric,
+            CREATE TABLE IF NOT EXISTS {schema}.{t['name']} (
+                event_time timestamptz not null,
+                event_type varchar(32),
+                product_id bigint,
                 price money,
                 user_id numeric,
-                user_session varchar(64)
+                user_session char(36)
             );
             """
             rp(create_table_statement)
@@ -85,12 +86,7 @@ def create_table(schema, task):
             with open(t['path'], 'r') as f:
                 next(f)
                 # copy from only work for schema 'public'
-                cur.copy_from(
-                    f, 
-                    f"{t['name']}",
-                    sep=",",
-                    columns=('event_time','event_type','product_id','price','user_id','user_session')
-                )
+                cur.copy_expert(f"COPY {schema}.{t['name']} FROM STDIN WITH CSV", f)
             conn.commit()
         cur.close()
         conn.close()
@@ -101,6 +97,6 @@ def create_table(schema, task):
 
 if __name__ == "__main__":
     task = generate_file_path()
-    schema_name = "ex_seve2"
+    schema_name = "ex02"
     create_table(schema_name, task)
     # create_table_2(schema_name, task)

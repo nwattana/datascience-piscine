@@ -70,12 +70,12 @@ def create_table(schema, task):
         for t in task:
             create_table_statement = f"""
             CREATE TABLE IF NOT EXISTS {schema}.{t['name']} (
-                event_time date,
-                event_type varchar(20),
-                product_id numeric,
+                event_time timestamptz not null,
+                event_type varchar(32),
+                product_id bigint,
                 price money,
                 user_id numeric,
-                user_session varchar(64)
+                user_session char(36)
             );
             """
             rp(create_table_statement)

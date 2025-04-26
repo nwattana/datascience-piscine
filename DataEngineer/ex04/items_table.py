@@ -67,13 +67,13 @@ def create_customer_table(schema, task):
             # CREATE TABLE IF NOT EXISTS {schema}.{t['name']} (
             # Handle table ซ้ำ raise error แล้วไป ทำ table ถัดไปเลย
             create_table_statement = f"""
-            CREATE TABLE {schema}.{t['name']} (
-                event_time date,
-                event_type varchar(20),
-                product_id numeric,
+            CREATE TABLE IF NOT EXISTS {schema}.{t['name']} (
+                event_time timestamptz not null,
+                event_type varchar(32),
+                product_id bigint,
                 price money,
                 user_id numeric,
-                user_session varchar(64)
+                user_session char(36)
             );
             """
             rp(create_table_statement)
@@ -118,9 +118,9 @@ def create_item_table(schema, task):
             # product_id,category_id,category_code,brand
             create_table_statement = f"""
             CREATE TABLE {schema}.{t['name']} (
-                product_id numeric,
-                category_id varchar(255),
-                category_code varchar(255),
+                product_id bigint,
+                category_id numeric,
+                category_code text,
                 brand varchar(255)
             );
             """
